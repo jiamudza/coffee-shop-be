@@ -1,4 +1,5 @@
 const userModel = require("../models/user_model");
+const cloudinary = require('../../helper/cloudinary_config')
 
 const userController = {
   get: async (req, res) => {
@@ -52,10 +53,17 @@ const userController = {
   },
 
   update: async (req, res) => {
+    const image = await cloudinary.uploader.upload(req.file.path, {
+      folder: `user_${req.params.user_id}`,
+      public_id: `${req.params.user_id}_avatar`,
+      width: 700,
+      height: 700,
+      crop: 'pad'
+    })
     const request = {
       ...req.body,
       user_id: req.params.user_id,
-      image: req.file.filename,
+      image: image.secure_url,
     }
     try {
       const result = await userModel.patch(request);

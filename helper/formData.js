@@ -2,9 +2,6 @@ const multer = require("multer");
 const path = require("path");
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/upload/images/");
-  },
   filename: (req, file, cb) => {
     cb(null, `${new Date().getTime()}-${file.originalname}`);
   },
@@ -18,7 +15,8 @@ const formUpload = multer({
       formatType == ".png" ||
       formatType == ".jpg" ||
       formatType == ".jpeg" ||
-      formatType == ".webp"
+      formatType == ".webp" ||
+      formatType == ".svg"
     ) {
       cb(null, true);
     } else {

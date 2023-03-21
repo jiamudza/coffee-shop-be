@@ -13,7 +13,7 @@ const productModel = {
   ) {
     let orderQuery = `ORDER BY product_name ${sortBy} LIMIT ${limit} OFFSET ${offset}`;
 
-    if (!search && !product_name && !filter && !category) {
+    if ((!search && !product_name) && (!filter && !category)) {
       return orderQuery;
     } else if (search && product_name) {
       return `WHERE product_name LIKE '%${search}%' AND product_name LIKE '${product_name}%' ${orderQuery}`;
@@ -31,10 +31,10 @@ const productModel = {
   get: (
     search,
     filter,
-    category = [],
+    category,
     product_name,
     sortBy = "ASC",
-    limit,
+    limit = 20,
     offset
   ) => {
     return new Promise((resolve, reject) => {
@@ -102,12 +102,12 @@ const productModel = {
                 return reject(err.message);
               } else {
                 return resolve(
-                  product_id,
+                  {product_id,
                   product_name,
                   product_image,
                   price,
                   description,
-                  category
+                  category}
                 );
               }
             }

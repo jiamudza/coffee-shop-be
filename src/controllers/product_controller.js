@@ -1,4 +1,5 @@
 const productModel = require("../models/product_model");
+const cloudinary = require('../../helper/cloudinary_config')
 
 const productController = {
   get: async (req, res) => {
@@ -49,31 +50,37 @@ const productController = {
     return progress;
   },
 
-  add: (req, res) => {
+  add: async (req, res) => {
+    const image = await cloudinary.uploader.upload(req.file.path, {
+      folder: `menu`,
+      public_id: `${req.file.filename}_menu`
+    })
     const request = {
       ...req.body,
+      product_image: image.secure_url
     }
 
-    return productModel
-      .add(request)
-      .then((result) => {
-        console.log(req)
-        res.status(201).send({ message: "success", data: result });
-      })
-      .catch((err) => {
-        res.status(500).send({ message: err });
-      });
+    try {
+      const result = await productModel
+        .add(request);
+      res.status(201).send({ message: "success", data: result });
+    } catch (err) {
+      res.status(500).send({ message: err });
+    }
   },
 
   update : async(req, res) => {
+    const image = await cloudinary.uploader.upload(req.file.path, {
+      folder: `menu`,
+      public_id: `${req.file.filename}_menu`
+    })
 
     try {
       const request = {
         ...req.body,
         product_id: req.params.product_id,
-        product_image: req.file.path
+        product_image: image.secure_url
       }
-      console.log(req.file)
       const progress = await productModel.update(request)
       .then(result => {
         res.status(201).send({
