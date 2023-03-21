@@ -49,20 +49,63 @@ const productController = {
     return progress;
   },
 
-  add: async (req, res) => {
+  add: (req, res) => {
     const request = {
       ...req.body,
-    };
-    const progress = await productModel
+    }
+
+    return productModel
       .add(request)
       .then((result) => {
+        console.log(req)
         res.status(201).send({ message: "success", data: result });
       })
       .catch((err) => {
         res.status(500).send({ message: err });
       });
-    return progress;
   },
+
+  update : async(req, res) => {
+
+    try {
+      const request = {
+        ...req.body,
+        product_id: req.params.product_id,
+        product_image: req.file.path
+      }
+      console.log(req.file)
+      const progress = await productModel.update(request)
+      .then(result => {
+        res.status(201).send({
+          message: 'success',
+          data: result
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(500).send({
+          message: err
+        })
+      })
+      return progress
+    } catch (error) {
+      return error
+    }
+  },
+
+  delete : async(req, res) => {
+    try {
+      const progress = await productModel.delete(req.params.product_id)
+      .then(result => {
+        res.status(200).send({message: 'success', data: result})
+      })
+      .catch(err => {
+        res.status(500).send({message: err})
+      })
+    } catch (error) {
+      return err
+    }
+  }
 };
 
 module.exports = productController;

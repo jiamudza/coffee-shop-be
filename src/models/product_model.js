@@ -20,9 +20,9 @@ const productModel = {
     } else if (search || product_name) {
       return `WHERE product_name LIKE '%${search}%' OR product_name LIKE '${product_name}%' ${orderQuery}`;
     } else if (filter && category) {
-      return `WHERE category[2] LIKE '%${filter}%' AND category[2] LIKE '${category}%' ${orderQuery}`;
+      return `WHERE category LIKE '%${filter}%' AND category LIKE '${category}%' ${orderQuery}`;
     } else if (filter || category) {
-      return `WHERE category[2] LIKE '%${filter}%' OR category[2] LIKE '${category}%' ${orderQuery}`;
+      return `WHERE category LIKE '%${filter}%' OR category LIKE '${category}%' ${orderQuery}`;
     } else {
       return orderQuery;
     }
@@ -83,20 +83,71 @@ const productModel = {
     category,
   }) => {
     return new Promise((resolve, reject) => {
-      db.query(
-        `INSERT INTO product (product_id, product_name, product_image, price, description, category) VALUES ($1, $2, $3, $4, $5, $6)`,
-        [uuidv4(), product_name, product_image, price, description, category],
-        (err, result) => {
-          if (err) {
-            reject(err.message);
-          } else {
-            resolve(
-              product_id,
+      db.query(`select * from product`, (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          db.query(
+            `INSERT INTO product (product_id, product_name, product_image, price, description, category) VALUES ($1, $2, $3, $4, $5, $6)`,
+            [
+              uuidv4(),
               product_name,
               product_image,
               price,
               description,
-              category
+              category,
+            ],
+            (err, result) => {
+              if (err) {
+                return reject(err.message);
+              } else {
+                return resolve(
+                  product_id,
+                  product_name,
+                  product_image,
+                  price,
+                  description,
+                  category
+                );
+              }
+            }
+          );
+        }
+      });
+    });
+  },
+
+  update: ({ product_id, product_name, product_image, price, description }) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `select * from product where product_id = '${product_id}'`,
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            return reject(err.message);
+          } else {
+            db.query(
+              `UPDATE product SET product_name ='${
+                product_name || result.rows[0].product_name
+              }', product_image ='${
+                product_image || result.rows[0].product_image
+              }', price ='${price || result.rows[0].price}', description ='${
+                description || result.rows[0].description
+              }' WHERE product_id='${product_id}'`,
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                  return reject(err);
+                } else {
+                  return resolve({
+                    product_id,
+                    product_image,
+                    product_name,
+                    price,
+                    description,
+                  });
+                }
+              }
             );
           }
         }
@@ -104,24 +155,15 @@ const productModel = {
     });
   },
 
-  update: ({
-    product_id,
-    product_name,
-    product_image,
-    price,
-    description,
-    category,
-  }) => {
+  delete : (product_id) => {
     return new Promise((resolve, reject) => {
-      db.query(`UPDATE product SET display_name ='${
-        product_name || result.rows[0].product_name
-      }', product_image ='${product_image || result.rows[0].product_image}', price ='${
-        price || result.rows[0].price
-      }', description ='${
-        description || result.rows[0].description
-      }',  category ='${category || result.rows[0].category}' WHERE product_id='${product_id}'`, (err, result) => {
-        
-      })
+      db.query(`delete from product where product_id = '${product_id}'`, (err, result) => {
+        if(err) {
+          return reject(err.message)
+        } else{
+          return resolve(result.rows)
+        }
+      }) 
     })
   }
 };

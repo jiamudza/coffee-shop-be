@@ -4,11 +4,13 @@ const express = require("express");
 const app = express();
 const router = require("./src/routes/index");
 const cors = require("cors");
-const path = require('path')
+const path = require('path');
+const bodyParser = require('body-parser')
 const port = process.env.PORT || 5000
 
 
 app.use(cors());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")))
 
@@ -24,5 +26,5 @@ app.get("*", (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Coffee Shop Backend Succes Run on Port ${port}` );
+  console.log(`Coffee Shop Backend Success Run on Port ${port}` );
 });

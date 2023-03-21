@@ -5,8 +5,6 @@ const userController = {
     let { search, display_name, sortBy, page = 1, limit = 5 } = req.query;
     let offset = (page - 1) * limit;
 
-    console.log(offset);
-
     try {
       const result = await userModel.get(
         search,
@@ -66,6 +64,6 @@ const userController = {
       console.log(err);
       res.status(500).send({ message: "error" });
     }
-  },
+  },  
 };
 module.exports = userController;
