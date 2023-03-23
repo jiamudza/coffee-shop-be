@@ -20,9 +20,9 @@ const productModel = {
     } else if (search || product_name) {
       return `WHERE product_name LIKE '%${search}%' OR product_name LIKE '${product_name}%' ${orderQuery}`;
     } else if (filter && category) {
-      return `WHERE category LIKE '%${filter}%' AND category LIKE '${category}%' ${orderQuery}`;
+      return `WHERE category LIKE '${filter}%' AND category LIKE '${category}%' ${orderQuery}`;
     } else if (filter || category) {
-      return `WHERE category LIKE '%${filter}%' OR category LIKE '${category}%' ${orderQuery}`;
+      return `WHERE category LIKE '${filter}%' OR category LIKE '${category}%' ${orderQuery}`;
     } else {
       return orderQuery;
     }
