@@ -58,14 +58,9 @@ const cartController = {
     },
 
     delete : async(req, res) => {
-        const request = {
-            ...req.body,
-            cart_id : req.params.cart_id,
-            user_id : req.body.user_id
-        }
         console.log(request)
         try {
-            const progress = await cartModel.delete(request)
+            const progress = await cartModel.delete(req.params.cart_id)
             .then(result => {
                 res.status(201).send({message: 'success', data: result})
             })
