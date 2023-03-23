@@ -30,7 +30,6 @@ const cartModel = {
           if (err) {
             return reject(err.message);
           } else {
-            console.log(user_id)
             return resolve(result.rows);
           }
         }
