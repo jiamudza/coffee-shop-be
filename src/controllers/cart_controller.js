@@ -58,7 +58,6 @@ const cartController = {
     },
 
     delete : async(req, res) => {
-        console.log(request)
         try {
             const progress = await cartModel.delete(req.params.cart_id)
             .then(result => {

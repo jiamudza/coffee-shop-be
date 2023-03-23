@@ -65,7 +65,7 @@ const cartModel = {
   delete: (cart_id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `delete from cart where and cart_id = '${cart_id}'`,
+        `delete from cart where cart_id = '${cart_id}'`,
         (err, result) => {
           if (err) {
             return reject(err.message);
