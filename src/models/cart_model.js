@@ -8,7 +8,7 @@ const cartModel = {
         if (err) {
           return reject(err.message);
         } else {
-          return resolve(result.rows[0]);
+          return resolve(result.rows);
         }
       });
     });
