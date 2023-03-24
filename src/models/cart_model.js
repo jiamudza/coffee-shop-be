@@ -76,6 +76,19 @@ const cartModel = {
       );
     });
   },
+
+  deleteByUser: (user_id) => {
+    return new Promise((resolve, reject) => {
+      db.query(`delete from cart where user_id = '${user_id}'`,
+      (err, result) => {
+        if(err) {
+          return reject(err.message)
+        } else {
+          return resolve('data is deleted')
+        }
+      })
+    })
+  }
 };
 
 module.exports = cartModel;
