@@ -17,7 +17,7 @@ const cartModel = {
   getByUser: (user_id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `select cart.cart_id, users.display_name, product.product_name, product.product_image, cart.amount, cart.total, size.size, users.delivery_address from cart 
+        `select cart.cart_id, users.display_name, product.product_id, product.product_name, product.product_image, cart.amount, cart.total, size.size, users.delivery_address from cart 
         left join users 
         on cart.user_id = users.user_id
         left join product
