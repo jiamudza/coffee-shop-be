@@ -51,7 +51,7 @@ const historyModel = {
     console.log(history_id);
     return new Promise((resolve, reject) => {
       db.query(
-        `select product.product_name, product.product_image, product.price,  users.delivery_address, history.history_id, history.user_id, history.amount from history
+        `select product.product_name, product.product_image, product.price, users.delivery_address, history.history_id, history.user_id, history.amount, history.total from history
         left join users 
         on history.user_id = users.user_id
         left join product
