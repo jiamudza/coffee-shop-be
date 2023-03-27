@@ -1,5 +1,6 @@
 const productModel = require("../models/product_model");
 const cloudinary = require('../../helper/cloudinary_config')
+const path = require('path')
 
 const productController = {
   get: async (req, res) => {
