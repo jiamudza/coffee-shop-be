@@ -130,6 +130,19 @@ const historyModel = {
       );
     });
   },
+
+  deleteByUser: (user_id) => {
+    return new Promise((resolve, reject) => {
+      db.query(`delete from history where user_id = '${user_id}'`,
+      (err, result) => {
+        if(err) {
+          return reject(err.message)
+        } else{
+          return resolve(`Item History with user id '${user_id}' is sucessfully deleted`)
+        }
+      })
+    })
+  }
 };
 
 module.exports = historyModel;

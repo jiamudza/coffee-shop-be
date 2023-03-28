@@ -96,6 +96,16 @@ const historyController = {
       return error;
     }
   },
+
+  deleteByUser: async(req,res) => {
+    const progress = await historyModel.deleteByUser(req.params.user_id)
+    .then(result => {
+      res.status(201).send({message: result})
+    })
+    .catch(err => {
+      res.status(500).send({message : err})
+    })
+  }
 };
 
 module.exports = historyController;
