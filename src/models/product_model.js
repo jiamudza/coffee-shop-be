@@ -16,9 +16,9 @@ const productModel = {
     if ((!search && !product_name) && (!filter && !category)) {
       return orderQuery;
     } else if (search && product_name) {
-      return `WHERE product_name LIKE '%${search}%' AND product_name LIKE '${product_name}%' ${orderQuery}`;
+      return `WHERE product_name LIKE '%${search}%' AND product_name LIKE '%${product_name}%' ${orderQuery}`;
     } else if (search || product_name) {
-      return `WHERE product_name LIKE '%${search}%' OR product_name LIKE '${product_name}%' ${orderQuery}`;
+      return `WHERE product_name LIKE '%${search}%' OR product_name LIKE '%${product_name}%' ${orderQuery}`;
     } else if (filter && category) {
       return `WHERE category LIKE '${filter}%' AND category LIKE '${category}%' ${orderQuery}`;
     } else if (filter || category) {
